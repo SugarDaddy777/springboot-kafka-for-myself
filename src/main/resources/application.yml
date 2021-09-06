@@ -1,0 +1,14 @@
+server:
+  port: 9090
+spring:
+  kafka:
+    bootstrap-servers: 159.75.2.217:9092
+    consumer:
+      # 配置消费者消息offset是否自动重置(消费者重连会能够接收最开始的消息)
+      auto-offset-reset: earliest
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3  #  重试次数
+kafka:
+  topic:
+    my-topic: my-topic
