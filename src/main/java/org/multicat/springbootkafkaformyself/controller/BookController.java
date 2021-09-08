@@ -2,15 +2,14 @@ package org.multicat.springbootkafkaformyself.controller;
 
 import org.multicat.springbootkafkaformyself.service.BookConsumerService;
 import org.multicat.springbootkafkaformyself.service.BookProducerService;
+import org.multicat.springbootkafkaformyself.watcher.Master;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
-/**
- * @author shuang.kou
- */
+
 @RestController
 @RequestMapping(value = "/book")
 public class BookController {
@@ -38,5 +37,16 @@ public class BookController {
     @GetMapping("/rebuildConsumer")
     public void rebuildConsumer() {
         bookConsumerService.rebuildConsumer();
+    }
+
+    @GetMapping("/connectZK")
+    public void connectZooKeeper() {
+        try {
+            Master master = new Master("159.75.2.217:2181");
+            master.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

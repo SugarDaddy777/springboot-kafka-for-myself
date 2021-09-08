@@ -1,5 +1,10 @@
 server:
   port: 9090
+
+#日志配置
+logging:
+  config: classpath:log/log4j2-spring.xml
+
 spring:
   kafka:
     bootstrap-servers: 159.75.2.217:9092
