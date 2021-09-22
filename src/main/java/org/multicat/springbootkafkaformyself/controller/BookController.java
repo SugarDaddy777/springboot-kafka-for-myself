@@ -38,15 +38,4 @@ public class BookController {
     public void rebuildConsumer() {
         bookConsumerService.rebuildConsumer();
     }
-
-    @GetMapping("/connectZK")
-    public void connectZooKeeper() {
-        try {
-            Master master = new Master("159.75.2.217:2181");
-            master.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 }

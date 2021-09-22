@@ -3,9 +3,8 @@ package org.multicat.springbootkafkaformyself.watcher;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.*;
+import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
 
@@ -27,6 +26,28 @@ public class Master implements Watcher {
 
     public void connect() throws IOException {
         zooKeeper = new ZooKeeper(this.host, 15 * 1000, this);
+    }
+
+    public void create(String serverId) throws InterruptedException {
+        try {
+            zooKeeper.create("/master", serverId.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+        } catch (KeeperException e) {
+            if (checkMasterStatus(serverId)) {
+                return;
+            } else {
+                log.error("创建节点失败");
+            }
+        }
+    }
+
+    public boolean checkMasterStatus(String serverId) {
+        Stat stat = new Stat();
+        try {
+            byte[] data = zooKeeper.getData("/master", false, stat);
+            return serverId.equals(new String(data));
+        } catch (KeeperException | InterruptedException e) {
+            return false;
+        }
     }
 
     @Override

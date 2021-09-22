@@ -23,14 +23,16 @@ public class BookProducerService {
         Book book = new Book();
         book.setId(1L);
         book.setName(message);
-        ProducerRecord<String, Book> producerRecord = new ProducerRecord<>("my-topic", "index", book);
+        ProducerRecord<String, Book> myTopicProducerRecord = new ProducerRecord<>("my-topic", "index", book);
+        ProducerRecord<String, Book> anotherMyTopicProducerRecord = new ProducerRecord<>("another-my-topic", "index", book);
         Properties kafkaProperty = new Properties();
         kafkaProperty.put("bootstrap.servers", brokerServer);
         kafkaProperty.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         kafkaProperty.put("value.serializer", "org.multicat.springbootkafkaformyself.serializer.BookSerializer");
         try (KafkaProducer<String, Book> producer = new KafkaProducer<>(kafkaProperty)) {
-            Future<RecordMetadata> future = producer.send(producerRecord, new MessageCallback());
-            return future.get().toString();
+            Future<RecordMetadata> future = producer.send(myTopicProducerRecord, new MessageCallback());
+            Future<RecordMetadata> anotherFuture = producer.send(anotherMyTopicProducerRecord, new MessageCallback());
+            return future.get() + "\n" + anotherFuture.get();
         } catch (Exception e) {
             e.printStackTrace();
         }
