@@ -14,6 +14,11 @@ spring:
     producer:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       retries: 3  #  重试次数
+  redis:
+    database: 0
+    host: 159.75.2.217
+    port: 6379
+    timeout: 10000
 kafka:
   topic:
     my-topic: my-topic
