@@ -1,8 +1,8 @@
 package org.multicat.springbootkafkaformyself.controller;
 
+import org.multicat.springbootkafkaformyself.config.TestConfig;
 import org.multicat.springbootkafkaformyself.service.BookConsumerService;
 import org.multicat.springbootkafkaformyself.service.BookProducerService;
-import org.multicat.springbootkafkaformyself.watcher.Master;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +18,8 @@ public class BookController {
     private BookProducerService bookProducerService;
     @Resource
     private BookConsumerService bookConsumerService;
+    @Resource
+    private TestConfig testConfig;
 
     @GetMapping("/test")
     public String sendMsgTest(String message) {
@@ -27,6 +29,7 @@ public class BookController {
     @GetMapping("/startConsume")
     public void startConsume() {
         bookConsumerService.consumeStringMessage();
+        testConfig.test();
     }
 
     @GetMapping("/shutdownConsume")

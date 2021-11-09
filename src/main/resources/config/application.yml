@@ -5,6 +5,10 @@ server:
 logging:
   config: classpath:log/log4j2-spring.xml
 
+redisson:
+  lockWatchdogTimeout: 15000
+  connectionMinimumIdleSize : 10
+
 spring:
   kafka:
     bootstrap-servers: 159.75.2.217:9092
@@ -17,8 +21,9 @@ spring:
   redis:
     database: 0
     host: 159.75.2.217
-    port: 6379
+    port: 6380
     timeout: 10000
+
 kafka:
   topic:
     my-topic: my-topic
